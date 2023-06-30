@@ -7,9 +7,23 @@ const public_users = express.Router();
 
 // public_users.post("/register", (req,res) => {
 //   //Write your code here
-//   users.push({"firstname":req.query.firstName, "lastName":req.query.lastName,"email"})
+//   books.push({"firstname":req.query.firstName, "lastName":req.query.lastName,"email"})
 //   return res.status(300).json({message: "Yet to be implemented"});
 // });
+
+public_users.post("/register", (req,res) => {
+  const username = req.param.username;
+  const password = req.param.password;
+  if (username && password) {
+    if (!doesExist(username)) { 
+      books.push({"username":username,"password":password});
+      return res.status(200).json({message: "User successfully registred. Now you can login"});
+    } else {
+      return res.status(404).json({message: "User already exists!"});
+    }
+  } 
+  return res.status(404).json({message: "Unable to register user."});
+});
 
 // Get the book list available in the shop
 public_users.get('/',(req, res)=>{
@@ -18,7 +32,7 @@ public_users.get('/',(req, res)=>{
 });
 
 // Get book details based on ISBN
-public_users.get('/:isbn', (req, res)=> {
+public_users.get('/isbn/:isbn', (req, res)=> {
   //Write your code here
   const isbn = req.params.isbn;
   let filtered_books = books.filter((books)=> books.isbn === isbn);
@@ -27,7 +41,7 @@ public_users.get('/:isbn', (req, res)=> {
   
 // Get book details based on author
 // public_users.get('/author/:author',function (req, res) {
-public_users.get('/:author', (req, res)=> {
+public_users.get('/author/:author', (req, res)=> {
   //Write your code here
   const author = req.params.author
   let filtered_author = books.filter((books)=> books.author===author);
@@ -35,7 +49,7 @@ public_users.get('/:author', (req, res)=> {
 });
 
 // Get all books based on title
-public_users.get('/:title', (req, res)=> {
+public_users.get('/title/:title', (req, res)=> {
   //Write your code here
   const title = req.params.title
   let filtered_title = books.filter((books)=>books.title===title);
@@ -43,7 +57,7 @@ public_users.get('/:title', (req, res)=> {
 });
 
 //  Get book review
-public_users.get('/:isbn',(req, res)=> {
+public_users.get('/review/:isbn',(req, res)=> {
   //Write your code here
   const isbn = req.params.isbn;
   let filtered_isbn = books.filter((books) => books.isbn === isbn);
@@ -56,7 +70,7 @@ public_users.get('/:isbn',(req, res)=> {
       }
   
   books = books.filter((books)=> books.email != email);
-  users.push(filtered_isbn);
+  books.push(filtered_isbn);
   res.send('User with the isbn ${isbn} updated.');
 }
 else{
