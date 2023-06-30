@@ -11,19 +11,19 @@ const public_users = express.Router();
 //   return res.status(300).json({message: "Yet to be implemented"});
 // });
 
-public_users.post("/register", (req,res) => {
-  const username = req.param.username;
-  const password = req.param.password;
-  if (username && password) {
-    if (!doesExist(username)) { 
-      books.push({"username":username,"password":password});
-      return res.status(200).json({message: "User successfully registred. Now you can login"});
-    } else {
-      return res.status(404).json({message: "User already exists!"});
-    }
-  } 
-  return res.status(404).json({message: "Unable to register user."});
-});
+// public_users.post("/register", (req,res) => {
+//   const username = req.param.username;
+//   const password = req.param.password;
+//   if (username && password) {
+//     if (!doesExist(username)) { 
+//       books.push({"username":username,"password":password});
+//       return res.status(200).json({message: "User successfully registred. Now you can login"});
+//     } else {
+//       return res.status(404).json({message: "User already exists!"});
+//     }
+//   } 
+//   return res.status(404).json({message: "Unable to register user."});
+// });
 
 // Get the book list available in the shop
 public_users.get('/',(req, res)=>{
@@ -35,8 +35,8 @@ public_users.get('/',(req, res)=>{
 public_users.get('/isbn/:isbn', (req, res)=> {
   //Write your code here
   const isbn = req.params.isbn;
-  let filtered_books = books.filter((books)=> books.isbn === isbn);
-  res.send(filtered_books)
+  let filtered_books = books.filter((books)=> books.isbn == isbn);
+  res.send(filtered_books.isbn)
 });
   
 // Get book details based on author
@@ -57,25 +57,11 @@ public_users.get('/title/:title', (req, res)=> {
 });
 
 //  Get book review
-public_users.get('/review/:isbn',(req, res)=> {
-  //Write your code here
+public_users.get('/reviews/:isbn',(req, res) => {
   const isbn = req.params.isbn;
-  let filtered_isbn = books.filter((books) => books.isbn === isbn);
-  if (filtered_isbn.length > 0) {
-      let filtered_isbn = filtered_isbn[0];
-      let review = req.query.review;
-      //if review has changed
-      if(review) {
-          filtered_isbn.review = review
-      }
-  
-  books = books.filter((books)=> books.email != email);
-  books.push(filtered_isbn);
-  res.send('User with the isbn ${isbn} updated.');
-}
-else{
-    res.send("Unable to find the book");
-}
+  let filtered_books = books.filter((books)=> books.isbn == isbn);
+  const splitString = filtered_books.split(" ");
+  res.send(splitString[-1])
 });
 
 module.exports.general = public_users;
