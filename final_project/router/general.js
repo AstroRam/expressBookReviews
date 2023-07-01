@@ -20,6 +20,7 @@ public_users.post("/register", (req,res) => {
     return res.status(404).json({message: "Unable to register user."})
     ;
 });  
+
 public_users.post('/login', (req, res) => {
     // Insert Login Code Here
     let username = req.params.username;
@@ -28,69 +29,110 @@ public_users.post('/login', (req, res) => {
 });
 
 
-// Get the book list available in the shop
 
-public_users.get('/',(req, res)=>{
-    //Creating a promise method. The promise will get resolved when timer times out after 6 seconds.
-    let myPromise = new Promise((resolve,reject) => {
+public_users.get('/', (req, res)=> {
+// Get the book list available in the shop
+  let myPromise = new Promise((resolve,reject) => {
         setTimeout(() => {
-        resolve("Promise resolved")
-        },6000)})
-    //Console log before calling the promise
+          resolve("Promise resolved")
+        },6000)});
+        
+  //Write your code here
+  //Console log before calling the promise
     console.log("Before calling promise");
 
-    //Write your code here
-    res.send(JSON.stringify({books},null, 4 ))
-    //Call the promise and wait for it to be resolved and then print a message.
-    myPromise.then((successMessage) => {
-    console.log("From Callback " + successMessage)
-    })
 
-    //Console log after calling the promise
-    console.log("After calling promise");
-});
+    res.send(JSON.stringify({books},null, 4 ))
+
+    myPromise.then((successMessage) => {
+        console.log("From Callback " + successMessage)
+      })
+    
+      console.log("After calling promise");  
+})
+    
+
+
+
+
+
+
+
+  
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn', (req, res)=> {
     let myPromise = new Promise((resolve,reject) => {
         setTimeout(() => {
           resolve("Promise resolved")
-        },6000)})
+        },6000)});
+    
+    
+    console.log("Before calling promise");
   //Write your code here
-  const isbn = req.params.isbn;
-  myPromise.then((successMessage) => {
-  console.log("From Callback " + successMessage)
-  })
-  let filtered_books = books.filter((books)=> books.isbn === isbn);
-  console.log("Before calling promise");
-  res.send(filtered_books)
-  console.log("After calling promise");
+    const isbn = req.params.isbn;
+    myPromise.then((successMessage) => {
+        console.log("From Callback " + successMessage)
+      })    
+    let filtered_books = books.filter((books)=> books.isbn === isbn);
+    res.send(filtered_books)
+    console.log("After calling promise");
 });  
-
+    
 // public_users.get('/author/:author',function (req, res) {
 public_users.get('/author/:author', (req, res)=> {
-  //Write your code here
-  const author = req.params.author
-  let filtered_author = books.filter((books)=> books.author===author);
-  res.send(filtered_author)
-});
+    let myPromise = new Promise((resolve,reject) => {
+        setTimeout(() => {
+          resolve("Promise resolved")
+        },6000)});
 
+    console.log("Before calling promise");
+    //Write your code here
+    const author = req.params.author
+    
+    let filtered_author = books.filter((books)=> books.author===author);
+
+    myPromise.then((successMessage) => {
+        console.log("From Callback " + successMessage)
+    })
+    res.send(filtered_author)
+    console.log("After calling promise")    
+});
 // Get all books based on title
 public_users.get('/title/:title', (req, res)=> {
-  //Write your code here
-  const title = req.params.title
-  let filtered_title = books.filter((books)=>books.title===title);
-  res.send(filtered_title)
+    let myPromise = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            resolve("Promise resolved")
+          },6000)});
+    //Write your code here
+    console.log("Before calling promise")      
+    const title = req.params.title
+  
+    let filtered_title = books.filter((books)=>books.title===title);
+    myPromise.then((successMessage) => {
+        console.log("From Callback " + successMessage)
+    })     
+    res.send(filtered_title)
+    console.log("After calling promise")
 });
 // Get book details based on ISBN
 public_users.get('/reviews/:isbn', (req, res)=> {
+    let myPromise = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            resolve("Promise resolved")
+          },6000)});
     //Write your code here
+    console.log("before calling promise")
     const isbn = req.params.isbn;
     const review = req.params.reviews;
+    
     let filtered_books = books.filter((books)=> books.isbn === isbn);
     let filtered_reviews = filtered_books.filter((filtered_books)=> filtered_books.reviews===review);
+    myPromise.then((successMessage) => {
+        console.log("From Callback " + successMessage)
+    })  
     res.send(filtered_reviews)
+    console.log("After calling promise")
 });
-
 //update review based on isbn
 public_users.put("/auth/:isbn", (req, res) => {
     const isbn = req.params.isbn;
@@ -102,11 +144,4 @@ public_users.put("/auth/:isbn", (req, res) => {
     books.push(filtered_book);
     res.send(`User with the isbn  ${isbn} updated.`);
 });
-
-public_users.delete("/auth/review/:isbn", (req, res) => {
-    const isbn = req.params.isbn;
-    books = books.filter((books) => books.isbn != isbn);
-    res.send(`User with the isbn  ${isbn} deleted.`);
-  });
-
 module.exports.general = public_users;
