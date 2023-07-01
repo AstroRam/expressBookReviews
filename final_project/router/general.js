@@ -69,28 +69,29 @@ public_users.get('/reviews/:isbn', (req, res)=> {
     res.send(filtered_reviews)
 });  
 
-//   public_users.post("/register", (req,res) => {
-//     const username = req.params.username
-//     const password = req.params.password
-//     if (password.length < 6) {
-//       return res.status(400).json({ message: "Password less than 6 characters" })
-//     }
-//     try {
-//       public_users.create({
-//         username,
-//         password,
-//       }).then(user =>
-//         res.status(200).json({
-//           message: "User successfully created",
-//           user,
-//         })
-//       )
-//     } catch (err) {
-//       res.status(401).json({
-//         message: "User not successful created",
-//         error: error.mesage,
-//       })
-//     }
-//   });
+
+//addimg modifying a book review
+router.put("admod/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+    const review = req.params.reviews;
+    let filtered_books = books.filter((books) => books.isbn === isbn);
+    if (filtered_books.length) {
+        let filtered_book = filtered_books[0];
+        let review = req.query.reviews;
+        //if the DOB has changed
+        if(review) {
+            filtered_book.reviews = review
+        }
+        /*
+        Include code here similar to the one above for other attibutes
+        */
+        books = books.filter((books) => books.isbn != isbn);
+        books.push(filtered_book);
+        res.send(`User with the email  ${email} updated.`);
+    }
+    else{
+        res.send("Unable to find user!");
+    }
+  });
 
 module.exports.general = public_users;
